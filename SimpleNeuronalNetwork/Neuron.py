@@ -48,7 +48,7 @@ class Neuron:
         for i in range(len(self.input_weights)):
             self.input_weights[i] -= self.inputs[i] * change_factor
         return neuron_failure
-# network_error * learning_factor * sigmoid_derivation(output) * input
+
     def think(self):
         """
         Evaluates value of the sigmoid function of the sum off all input values multiplied with their weights.
