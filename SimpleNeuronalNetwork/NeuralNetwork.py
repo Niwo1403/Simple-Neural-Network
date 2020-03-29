@@ -103,9 +103,9 @@ def test_nn(nn):
 import datetime
 start = datetime.datetime.now()
 
-nn = NeuralNetwork([3, 2])  # 3, 1
+nn = NeuralNetwork([2])  # 3, 2
 inputs = [[0, 0, 1], [1, 1, 1], [1, 0, 1], [0, 1, 1]]
-outputs = [[1, 0], [0, 1], [0, 1], [1, 0]]  # [[0],[1],[1],[0]]#
+outputs = [[1, 0], [0, 1], [0, 1], [1, 0]]
 
 nn.train(inputs, outputs)
 test_nn(nn)
