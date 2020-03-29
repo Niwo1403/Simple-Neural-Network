@@ -54,6 +54,7 @@ class NeuralNetworkLayer:
         :param input_values: a list of the input values
         :param bias: the bias for the input, if not passed the default bias from the constructor is used
         """
+        input_values = input_values[:]  # create copy
         if bias is None:
             input_values.append(self.default_bias)
         else:

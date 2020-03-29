@@ -88,23 +88,14 @@ class NeuralNetwork:
         """
         return self.network_error
 
-
-# data to learn:
-inputs = [[0, 0, 1], [1, 1, 1], [1, 0, 1], [0, 1, 1]]
-outputs = [[1, 0], [0, 1], [0, 1], [1, 0]]
-
-# create and train network:
-nn = NeuralNetwork([3, 2])
-nn.train(inputs, outputs)
-
-# print results:
-print("Known Data:")
-print("[0, 0, 1] -> 0 | [1, 0]:  ", nn.think([0, 0, 1]))
-print("[1, 1, 1] -> 1 | [0, 1]:  ", nn.think([1, 1, 1]))
-print("[1, 0, 1] -> 1 | [0, 1]:  ", nn.think([1, 0, 1]))
-print("[0, 1, 1] -> 0 | [1, 0]:  ", nn.think([0, 1, 1]))
-print("\nUnknown Data:")
-print("[1, 0, 0] -> 1 | [0, 1]:  ", nn.think([1, 0, 0]))
-print("[1, 1, 0] -> 1 | [0, 1]:  ", nn.think([1, 1, 0]))
-print("[0, 0, 0] -> 0 | [1, 0]:  ", nn.think([0, 0, 0]))
-print("[0, 1, 0] -> 0 | [1, 0]:  ", nn.think([1, 1, 0]))
+    def print_results(self, input_values, output_values, lable=None):
+        """
+        Prints (formatted) the passed input, output and predictions of the neural network.
+        :param input_values: the input values for the neural network to test
+        :param output_values: the (correct) output values
+        :param lable: an information text, printed before the data is printed
+        """
+        if lable is not None:
+            print(lable)
+        for (inputs, outputs) in zip(input_values, output_values):
+            print(inputs, "->", 0 if outputs[0] else 1, "|", str(outputs) + ": ", self.think(inputs))
