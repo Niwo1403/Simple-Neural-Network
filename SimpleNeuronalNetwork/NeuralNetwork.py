@@ -89,25 +89,22 @@ class NeuralNetwork:
         return self.network_error
 
 
-def test_nn(nn):
-    print("[0, 0, 1] -> 0:  ", nn.think([0, 0, 1]))
-    print("[1, 1, 1] -> 1:  ", nn.think([1, 1, 1]))
-    print("[1, 0, 1] -> 1:  ", nn.think([1, 0, 1]))
-    print("[0, 1, 1] -> 0:  ", nn.think([0, 1, 1]))
-    print("\n")
-    print("[1, 0, 0] -> 1:  ", nn.think([1, 0, 0]))
-    print("[1, 1, 0] -> 1:  ", nn.think([1, 1, 0]))
-    print("[0, 0, 0] -> 0:  ", nn.think([0, 0, 0]))
-    print("[0, 1, 0] -> 0:  ", nn.think([1, 1, 0]))
-
-import datetime
-start = datetime.datetime.now()
-
-nn = NeuralNetwork([2])  # 3, 2
+# data to learn:
 inputs = [[0, 0, 1], [1, 1, 1], [1, 0, 1], [0, 1, 1]]
 outputs = [[1, 0], [0, 1], [0, 1], [1, 0]]
 
+# create and train network:
+nn = NeuralNetwork([3, 2])
 nn.train(inputs, outputs)
-test_nn(nn)
 
-print(datetime.datetime.now(), "\nDauer: ", datetime.datetime.now() - start)
+# print results:
+print("Known Data:")
+print("[0, 0, 1] -> 0 | [1, 0]:  ", nn.think([0, 0, 1]))
+print("[1, 1, 1] -> 1 | [0, 1]:  ", nn.think([1, 1, 1]))
+print("[1, 0, 1] -> 1 | [0, 1]:  ", nn.think([1, 0, 1]))
+print("[0, 1, 1] -> 0 | [1, 0]:  ", nn.think([0, 1, 1]))
+print("\nUnknown Data:")
+print("[1, 0, 0] -> 1 | [0, 1]:  ", nn.think([1, 0, 0]))
+print("[1, 1, 0] -> 1 | [0, 1]:  ", nn.think([1, 1, 0]))
+print("[0, 0, 0] -> 0 | [1, 0]:  ", nn.think([0, 0, 0]))
+print("[0, 1, 0] -> 0 | [1, 0]:  ", nn.think([1, 1, 0]))
