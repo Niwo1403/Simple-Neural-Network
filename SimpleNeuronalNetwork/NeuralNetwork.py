@@ -34,16 +34,6 @@ class NeuralNetwork:
         return iter(self.layers)
 
     @classmethod
-    def difference_squared(cls, a, b):
-        """
-        Evaluates the square of the difference from a and b.
-        :param a: the first number (minuend)
-        :param b: the second number (subtrahend)
-        :return: the square of the difference
-        """
-        return (a - b)**1#2
-
-    @classmethod
     def loss(cls, a, b):
         """
         Evaluates the difference of a and b and doubles it.
@@ -88,14 +78,16 @@ class NeuralNetwork:
         """
         return self.network_error
 
-    def print_results(self, input_values, output_values, lable=None):
+    def print_results(self, input_values, output_values, label=None, decimal_places=10):
         """
         Prints (formatted) the passed input, output and predictions of the neural network.
         :param input_values: the input values for the neural network to test
         :param output_values: the (correct) output values
-        :param lable: an information text, printed before the data is printed
+        :param label: an information text, printed before the data is printed
+        :param decimal_places: count of decimal places to round the prediction
         """
-        if lable is not None:
-            print(lable)
+        if label is not None:
+            print(label)
         for (inputs, outputs) in zip(input_values, output_values):
-            print(inputs, "->", 0 if outputs[0] else 1, "|", str(outputs) + ": ", self.think(inputs))
+            print("Input:", inputs, "   Output:", outputs, "   Prediction:",
+                  [round(x, decimal_places) for x in self.think(inputs)])
