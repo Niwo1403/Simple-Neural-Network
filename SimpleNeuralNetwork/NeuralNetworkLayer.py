@@ -1,5 +1,5 @@
-from SimpleNeuronalNetwork.Neuron import Neuron
-from SimpleNeuronalNetwork.Neuron import SimpleInputSupplier
+from SimpleNeuralNetwork.Neuron import Neuron
+from SimpleNeuralNetwork.Neuron import SimpleInputSupplier
 
 
 class NeuralNetworkLayer:

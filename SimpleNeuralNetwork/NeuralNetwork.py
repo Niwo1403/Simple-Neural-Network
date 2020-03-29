@@ -1,4 +1,4 @@
-from SimpleNeuronalNetwork.NeuralNetworkLayer import NeuralNetworkLayer
+from SimpleNeuralNetwork.NeuralNetworkLayer import NeuralNetworkLayer
 
 
 class NeuralNetwork:

@@ -1,4 +1,4 @@
-from SimpleNeuronalNetwork.NeuralNetwork import NeuralNetwork
+from SimpleNeuralNetwork.NeuralNetwork import NeuralNetwork
 
 
 # First example
