@@ -67,18 +67,19 @@ class NeuralNetwork:
     def train(self, input_values, output_values, iterations=10_000):
         """
         Trains the network with specified input and output values.
-        :param input_values: the input values for the network
-        :param output_values: the output values for the network
+        :param input_values: a list of the input values for the network
+        :param output_values: a list of the output values for the network
         :param iterations: count of the repetitions of the
         :return: the last error
         """
         for _ in range(iterations):
-            network_output = self.think(input_values)
-            network_error = sum(map(lambda network_value, desired_value:
-                                    NeuralNetwork.loss(network_value, desired_value),
-                                    network_output, output_values))
-            self.layers[-1].adjust(network_error * self.learning_factor)
-        return self.think(input_values)
+            for (nn_inputs, nn_outputs) in zip(input_values, output_values):
+                network_output = self.think(nn_inputs)
+                network_error = list(map(lambda network_value, desired_value:
+                                         NeuralNetwork.loss(network_value, desired_value) * self.learning_factor,
+                                         network_output, nn_outputs))
+                self.layers[-1].adjust(network_error)
+        return [self.think(nn_inputs) for nn_inputs in input_values]
 
     def get_error(self):
         """
@@ -87,20 +88,26 @@ class NeuralNetwork:
         """
         return self.network_error
 
+
+def test_nn(nn):
+    print("[0, 0, 1] -> 0:  ", nn.think([0, 0, 1]))
+    print("[1, 1, 1] -> 1:  ", nn.think([1, 1, 1]))
+    print("[1, 0, 1] -> 1:  ", nn.think([1, 0, 1]))
+    print("[0, 1, 1] -> 0:  ", nn.think([0, 1, 1]))
+    print("\n")
+    print("[1, 0, 0] -> 1:  ", nn.think([1, 0, 0]))
+    print("[1, 1, 0] -> 1:  ", nn.think([1, 1, 0]))
+    print("[0, 0, 0] -> 0:  ", nn.think([0, 0, 0]))
+    print("[0, 1, 0] -> 0:  ", nn.think([1, 1, 0]))
+
 import datetime
 start = datetime.datetime.now()
-nn = NeuralNetwork([3, 1])  # 3, 1
+
+nn = NeuralNetwork([3, 2])  # 3, 1
 inputs = [[0, 0, 1], [1, 1, 1], [1, 0, 1], [0, 1, 1]]
-outputs = [[0],[1],[1],[0]]#[[1, 0], [0, 1], [0, 1], [1, 0]]
-for (input_values, output_values) in zip(inputs, outputs):
-    nn.train(input_values, output_values)
-print("[0, 0, 1] -> 0:  ", nn.think([0, 0, 1]))
-print("[1, 1, 1] -> 1:  ", nn.think([1, 1, 1]))
-print("[1, 0, 1] -> 1:  ", nn.think([1, 0, 1]))
-print("[0, 1, 1] -> 0:  ", nn.think([0, 1, 1]))
-print("\n")
-print("[1, 0, 0] -> 1:  ", nn.think([1, 0, 0]))
-print("[1, 1, 0] -> 1:  ", nn.think([1, 1, 0]))
-print("[0, 0, 0] -> 0:  ", nn.think([0, 0, 0]))
-print("[0, 1, 0] -> 0:  ", nn.think([1, 1, 0]))
+outputs = [[1, 0], [0, 1], [0, 1], [1, 0]]  # [[0],[1],[1],[0]]#
+
+nn.train(inputs, outputs)
+test_nn(nn)
+
 print(datetime.datetime.now(), "\nDauer: ", datetime.datetime.now() - start)

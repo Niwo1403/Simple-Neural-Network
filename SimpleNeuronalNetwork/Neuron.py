@@ -40,11 +40,11 @@ class Neuron:
     def adjust(self, adjustment_factor):
         """
         Adjust the weights of the neuron.
-        :param adjustment_factor: the product of the error of the next layer and the learning factor
-        :return: the failure of the neuron
+        :param adjustment_factor: the product of the error of the neuron and the learning factor
+        :return: a map object of the failures of the neuron (for each weight)
         """
         change_factor = Neuron.sigmoid_derivation(self.output) * adjustment_factor
-        neuron_failure = sum(map(lambda weight: weight * change_factor, self.input_weights))
+        neuron_failure = map(lambda weight: weight * change_factor, self.input_weights)
         for i in range(len(self.input_weights)):
             self.input_weights[i] -= self.inputs[i] * change_factor
         return neuron_failure
@@ -75,13 +75,14 @@ class SimpleInputSupplier(Neuron):
     Used as pseudo neuron for the input layer and as bias.
     """
 
-    def __init__(self, input_value=1):
+    def __init__(self, input_value=1, neuron_in_layer=0):
         """
         Supplies as pseudo neuron the input data for the next layer.
         :param input_value: the value to supply
         """
         super().__init__(None)
         self.value = input_value
+        self.neuron_in_layer = neuron_in_layer
 
     def get_output(self):
         """
@@ -105,4 +106,4 @@ class SimpleInputSupplier(Neuron):
         change_factor = Neuron.sigmoid_derivation(self.value) * adjustment_factor
         neuron_failure = self.value * change_factor
         self.value -= change_factor
-        return neuron_failure
+        return [0] * self.neuron_in_layer + [neuron_failure]

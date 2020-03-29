@@ -18,7 +18,7 @@ class NeuralNetworkLayer:
         self.prev_layer = previous
         self.default_bias = bias
         self.neurons = [Neuron(self) for _ in range(neuron_count)]
-        self.neurons.append(SimpleInputSupplier(bias))
+        self.neurons.append(SimpleInputSupplier(bias, neuron_count))
         self.expected_values = None
         self.is_output_layer = False
 
@@ -38,15 +38,15 @@ class NeuralNetworkLayer:
         """
         return NeuralNetworkLayer(neuron_count, None, 1)
 
-    def adjust(self, output_error):
+    def adjust(self, output_errors):
         """
         Adjusts the weights of the neurons in this layer of the neural network.
-        :param output_error: the error of the layer multiplied by the learning rate
+        :param output_errors: the errors of the layer multiplied by the learning rate
         """
-        layer_error = 0
-        for neuron in self:
-            layer_error += neuron.adjust(output_error)
-        self.prev_layer.adjust(layer_error)
+        layer_error = [0] * self.prev_layer.get_neuron_count()
+        for i in range(self.neuron_count):
+            layer_error = map(lambda x, y: x + y, layer_error, self.neurons[i].adjust(output_errors[i]))
+        self.prev_layer.adjust(list(layer_error))
 
     def set_input(self, input_values, bias=None):
         """
@@ -102,6 +102,7 @@ class NeuralNetworkLayer:
         if not self.is_output_layer:
             self.is_output_layer = True
             self.neurons = self.neurons[:-1]
+            self.neuron_count -= 1
 
     class SimpleNetworkSupplier:
         """
@@ -129,9 +130,9 @@ class NeuralNetworkLayer:
             """
             return len(self.input_neurons)
 
-        def adjust(self, adjustment_factor):
+        def adjust(self, output_errors):
             """
             Doesn't include neurons and so adjust call has no effect.
-            :param adjustment_factor: irrelevant
+            :param output_errors: irrelevant
             """
             pass
